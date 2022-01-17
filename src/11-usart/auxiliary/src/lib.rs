@@ -11,12 +11,12 @@ pub use stm32f3_discovery::stm32f3xx_hal::pac::usart1;
 
 pub mod monotimer;
 
+use monotimer::MonoTimer;
 use stm32f3_discovery::stm32f3xx_hal::{
+    pac::{self, USART1},
     prelude::*,
     serial::Serial,
-    pac::{self, USART1},
 };
-use monotimer::MonoTimer;
 
 pub fn init() -> (&'static mut usart1::RegisterBlock, MonoTimer, ITM) {
     let cp = cortex_m::Peripherals::take().unwrap();
@@ -32,8 +32,14 @@ pub fn init() -> (&'static mut usart1::RegisterBlock, MonoTimer, ITM) {
         () => {
             let mut gpioa = dp.GPIOA.split(&mut rcc.ahb);
 
-            let tx = gpioa.pa9.into_af7_push_pull(&mut gpioa.moder, &mut gpioa.otyper, &mut gpioa.afrh);
-            let rx = gpioa.pa10.into_af7_push_pull(&mut gpioa.moder, &mut gpioa.otyper, &mut gpioa.afrh);
+            let tx =
+                gpioa
+                    .pa9
+                    .into_af7_push_pull(&mut gpioa.moder, &mut gpioa.otyper, &mut gpioa.afrh);
+            let rx =
+                gpioa
+                    .pa10
+                    .into_af7_push_pull(&mut gpioa.moder, &mut gpioa.otyper, &mut gpioa.afrh);
 
             (tx, rx)
         }
@@ -41,8 +47,14 @@ pub fn init() -> (&'static mut usart1::RegisterBlock, MonoTimer, ITM) {
         () => {
             let mut gpioc = dp.GPIOC.split(&mut rcc.ahb);
 
-            let tx = gpioc.pc4.into_af7_push_pull(&mut gpioc.moder, &mut gpioc.otyper, &mut gpioc.afrl);
-            let rx = gpioc.pc5.into_af7_push_pull(&mut gpioc.moder, &mut gpioc.otyper, &mut gpioc.afrl);
+            let tx =
+                gpioc
+                    .pc4
+                    .into_af7_push_pull(&mut gpioc.moder, &mut gpioc.otyper, &mut gpioc.afrl);
+            let rx =
+                gpioc
+                    .pc5
+                    .into_af7_push_pull(&mut gpioc.moder, &mut gpioc.otyper, &mut gpioc.afrl);
 
             (tx, rx)
         }
